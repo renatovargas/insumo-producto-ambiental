@@ -92,7 +92,7 @@ dim(M)
 
 dim(N)
 
-dim(N) == dim(N)
+dim(M) == dim(N)
 
 S <- M + N
 
@@ -250,6 +250,7 @@ I3 <-  diag(3)
 # ¿Qué tal una más grande?
 I10 <- diag(10)
 I10
+
 
 # Podemos ahorrarnos un paso y obtener la matriz identidad de dimensiones
 # adecuadas de manera automágica:
