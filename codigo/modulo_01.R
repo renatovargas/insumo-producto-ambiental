@@ -289,9 +289,9 @@ t(c)
 t( t(c) )
 
 # =============================================================================
-# 4. Sistemas de ecuaciones lineares
+# 4. Sistemas de ecuaciones lineales
 
-# Si tenemos dos ecuaciones lineares con dos incógnitas x_1 and x_2
+# Si tenemos dos ecuaciones lineales con dos incógnitas x_1 and x_2
 
 #     2x_1 +  x_2 = 10
 #     5x_1 + 3x_2 = 26
@@ -326,7 +326,7 @@ A
 b
 
 # recordemos también que podemos leer del portapapeles:
-# A <- read.table("clipboard", sep="\t")
+# A <- matrix( read.table("clipboard", sep="\t"))
 
 # En álgebra ordinario, si tenemos:
 
@@ -375,7 +375,7 @@ x <- solve(A) %*% b
 x
 
 # =============================================================================
-# Diagonal matrices
+# Matrices diagonales
 
 # En notación encontraremos repetidamente un mecanismo útil para crear matrices
 # diagonales de un vector. La versión "sombrero" de un vector "x" es una matriz
