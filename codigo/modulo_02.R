@@ -29,9 +29,9 @@ Z <- matrix( c(150,500,200,100), nrow = 2, ncol = 2, byrow = TRUE)
 
 # Es importante identificar los sectores en nuestra matriz
 
-ind <- c("Agricultura", "Manufacturas")
-colnames(Z) <- ind 
-rownames(Z) <- ind
+sectores <- c("Agricultura", "Manufacturas")
+colnames(Z) <- sectores 
+rownames(Z) <- sectores
 
 # Ingresamos nuestra demanda final (según el diagrama)
 f <- c(350, 1700)
@@ -56,6 +56,8 @@ dim(A)
 
 I <- diag(   dim(A)[1]    )
 I
+
+I - A
 
 # Y así estimar nuestra matriz de Leontief
 L <- solve( I - A )
