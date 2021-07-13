@@ -1,5 +1,8 @@
-# Matriz de Insumo Producto y Cuentas Ambientales de Costa Rica
-# Banco Central de Costa Rica
+# Insumo-Producto Ambientalmente Extendido
+# Facilitado por Renato Vargas
+# Modulo 03 - Matriz de Insumo Producto y 
+# Cuentas Ambientales de Costa Rica
+# Publicadas por el Banco Central de Costa Rica
 # Año 2017
 
 # Preámbulo
