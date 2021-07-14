@@ -7,7 +7,8 @@
 
 # Preámbulo
 library(openxlsx)
-rm(list = ls() )
+rm(  list = ls()  )
+
 
 # Directorio de trabajo (ruta a los datos con "/" en vez de "\")
 wd <- c("D:/github/insumo-producto-ambiental/datos")
@@ -45,7 +46,7 @@ local <- c(2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,
 # Aquí utilizamos el método del índice en R para obtener nuestros elementos
 
 # Compras entre actividades económicas domésticas (consumo intermedio)
-Z <- Z_cruda[local,local]
+Z <- Z_cruda[  local  ,  local   ]
 
 # Compras de producto importado de las actividades domésticas (importaciones)
 M <- Z_cruda[-local,local]
@@ -69,7 +70,7 @@ DF_cruda <- as.matrix(read.xlsx("MIP-AE-AE-017-CR.xlsx",
                      )  # <-- Fin del paréntesis
 
 # Componente doméstico de la demanda final
-DF <- DF_cruda[local,]
+DF <- DF_cruda[ local ,  ]
 
 # Obtenemos nuestros códigos de actividad y nombres
 cods <- as.data.frame(
@@ -101,7 +102,7 @@ codsDF <- as.data.frame(
 
 # Y nombramos nuestra matriz Z
 colnames(Z) <- as.vector(cods$codAECR)
-rownames(Z) <- as.vector(cods$nomAECR)
+rownames(Z) <- as.vector(cods$codAECR)
 
 # Y nuestra matriz de demanda final DF
 colnames(DF) <- as.vector(codsDF$"1")

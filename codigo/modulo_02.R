@@ -130,13 +130,16 @@ deltaZ * tc
 # Otros impactos pueden ser obtenidos a través de coeficientes
 
 # Imaginemos que nuestro uso de agua está dado por
-eprima <- c(300, 500)
-rownames(eprima) <- ind # c("Agricultura", "Manufacturas")
-colnames(eprima) <- "Metros Cúbicos de Agua"
+eprima <- t(as.matrix(c(300, 500)))
+ind <- c("Agricultura", "Manufacturas")
+rownames(eprima) <- "Metros Cúbicos de Agua" # c("Agricultura", "Manufacturas")
+colnames(eprima) <- ind
 eprima
 
-# In matrix algebra you would have to transpose e and 
-# postmultiply it by a diagonal version of x
+eprima <- as.vector(eprima)
+
+# En álgebra matricial hay que transponer eprima
+# y posmultiply it by a diagonal version of x
 epsilon <- t(as.matrix(eprima)) %*% solve(diag(x))
 
 # También se puede utilizar la regla de reciclaje para usar la división normal
@@ -201,10 +204,10 @@ deltaf2 <- c(0,1)
 L %*% deltaf2
 
 # En el primer caso, vemos una producción adicional de USD 1.254
-# del sector 1 y USD 0.264 del sector 2. El 1.254 es lo que se necesita
+# del sector 1 y USD 0.264 del sector 2. El 1 en el 1.254 es lo que se necesita
 # para satisfacer la demanda más USD 0.254 para que se puedan mover los
 # insumos entre sectores.
-# El USD 0.254 is para compras entre sectores exclusivamente.
+# El USD 0.264 is para compras entre sectores exclusivamente.
 
 # El multiplicador  del sector 1 está definido como la suma de los ele-
 # mentos en la columna deltax(1) (USD 1.518) dividido por USD 1 (adicional)
