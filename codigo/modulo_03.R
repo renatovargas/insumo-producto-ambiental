@@ -136,7 +136,7 @@ colnames(E_cruda) <- substr(colnames(E_cruda), start = 1, stop = 5)
 
 # Y agregamos utilizando el mismo procedimiento que anteriormente.
 E <- as.matrix(t(aggregate.Matrix(t(E_cruda), colnames(E_cruda),fun = "sum")))
-
+E <- as.matrix(E)
 # Y chequeamos que nuestras dimensiones sean iguales a las columnas
 # de Z
 dim(E)
@@ -150,13 +150,14 @@ colnames(E) <- colnames(Z)
 # Modelo de insumo producto
 
 # Producción
-x <- rowSums(Z) + rowSums(DF)
+x <- as.vector(rowSums(Z) + rowSums(DF))
 
 # Demanda final
 f <- as.vector(rowSums(DF))
 
 # x sombrero
 xhat <- diag(x)
+xhat_inv <- solve(xhat)
 
 # Matriz de coeficientes técnicos
 A <- Z %*% solve( xhat )
@@ -173,7 +174,7 @@ colnames(EC) <- colnames(Z)
 
 # Nueva demanda final
 f1 <- f
-f1[80] <- f1[80] *1.10
+f1[80] <- f1[80] *1.20
 
 # Cálculo de nuevas demandas de energía por energético
 EC %*% L %*% f1
@@ -188,7 +189,7 @@ colnames(deltaE) <- c("Original", "Política", "Diferencia", "Porcentual")
 
 # Y si queremos el detalle
 E1 <- EC %*% diag(as.vector(L %*% f1))
-
+colnames(E1) <- colnames(E)
 
 # =============================================================================
 # Excel
@@ -205,6 +206,8 @@ write.xlsx( as.data.frame(deltaE) ,
             overwrite = TRUE
             )
 
+# Gráfico
+heatmap(E1, Colv = NA, Rowv = NA)
 
 # =============================================================================
 # Bloopers
