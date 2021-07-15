@@ -7,6 +7,8 @@
 
 # Preámbulo
 library(openxlsx)
+library(reshape2)
+library(Matrix.utils)
 rm(  list = ls()  )
 
 
@@ -24,6 +26,210 @@ Z_cruda <- as.matrix(read.xlsx("MIP-AE-AE-017-CR.xlsx",
                                colNames = FALSE, 
                                rowNames = FALSE)
                      )  # <-- Fin del paréntesis
+
+nombres <- read.xlsx("MIP-AE-AE-017-CR.xlsx", 
+                               sheet = "MIP 2017", 
+                               rows= c(12:264), 
+                               cols = 1, 
+                               skipEmptyRows = FALSE, 
+                               colNames = FALSE, 
+                               rowNames = FALSE
+)  # <-- Fin del paréntesis
+
+# Agregamos nuestra matriz para tener un valor por actividad
+
+# Nombramos nuestra matriz Z
+colnames(Z_cruda) <- as.vector(nombres$X1)
+rownames(Z_cruda) <- as.vector(nombres$X1)
+
+Z <- aggregate.Matrix(Z_cruda, as.factor(nombres$X1),fun = "sum")
+Z <- t(aggregate.Matrix(t(Z), as.factor(nombres$X1),fun = "sum"))
+Z <- as.matrix(Z)
+
+dim(Z)
+
+
+# Demanda Final
+DF_cruda <- as.matrix(read.xlsx("MIP-AE-AE-017-CR.xlsx", 
+                               sheet = "MIP 2017", 
+                               rows= c(12:264), 
+                               cols = c(258:262), 
+                               skipEmptyRows = FALSE, 
+                               colNames = FALSE, 
+                               rowNames = FALSE)
+                     )  # <-- Fin del paréntesis
+
+
+# Lo mismo para la demanda final
+codsDF <- as.matrix(
+  t(
+    read.xlsx(
+      "MIP-AE-AE-017-CR.xlsx",
+      sheet = "MIP 2017", 
+      rows= c(9:10), 
+      cols = c(258:262), 
+      skipEmptyRows = FALSE,
+      colNames = FALSE, 
+      rowNames = FALSE
+  ))
+)# <-- Fin del paréntesis
+
+# Y nuestra matriz de demanda final DF
+colnames(DF_cruda) <- as.vector(codsDF[,1])
+rownames(DF_cruda) <- as.vector(rownames(Z_cruda))
+
+# Y agregamos las filas que se repiten
+DF <- aggregate.Matrix(DF_cruda, as.factor(rownames(DF_cruda)),fun = "sum")
+DF <- as.matrix(DF)
+
+dim(Z)
+
+
+
+# =============================================================================
+# Cuenta de energía
+
+# Importamos los datos crudos
+E_cruda <- as.matrix(read.xlsx("COUF-2017.xlsx", 
+                               sheet = "COUF-E 2017", 
+                               rows= c(127:146), 
+                               cols = c(3:169), 
+                               skipEmptyRows = FALSE, 
+                               colNames = FALSE, 
+                               rowNames = TRUE # Sí hay nombres de fila
+                               )
+)  # <-- Fin del paréntesis
+
+# Extraemos los nombres de columna
+nombres_e <- t(read.xlsx("COUF-2017.xlsx", 
+                               sheet = "COUF-E 2017", 
+                               rows= c(16), 
+                               cols = c(4:169), 
+                               skipEmptyRows = FALSE, 
+                               colNames = FALSE, 
+                               rowNames = FALSE)
+                     )  # <-- Fin del paréntesis
+
+# Y nombramos las columnas de nuestra matriz de usos energéticos
+colnames(E_cruda) <- c(nombres_e[,1])
+
+# Las dimensiones de E_cruda son mayores a las de Z
+# porque hay agregaciones por grupos de sectores y
+# hay sectores desagregados a mayor detalle.
+
+dim(E_cruda)
+
+# Identificamos las posiciones que son sumas de sectores
+# Nótese que dejamos dos sumas dentro que no tienen detalle
+# correspondientes a AE082 (Electricidad) y AE144 (hogares como empl.)
+
+posGruposEnergia <- c(1,31,35,78,82,94,97,106,110,113,
+                      119,122,133,143,147,150,153,158)
+
+# Extraemos solo los sectores (nótese el "-" antes de posGruposEnergia)
+E_cruda <- E_cruda[ , -posGruposEnergia]
+
+# Utilizando la función substr() extraemos los primeros 5 digitos de
+# la nomenclatura para poder agregar por actividades que comparten
+# esos mismos.
+colnames(E_cruda) <- substr(colnames(E_cruda), start = 1, stop = 5)
+
+# Y agregamos utilizando el mismo procedimiento que anteriormente.
+E <- as.matrix(t(aggregate.Matrix(t(E_cruda), colnames(E_cruda),fun = "sum")))
+
+# Y chequeamos que nuestras dimensiones sean iguales a las columnas
+# de Z
+dim(E)
+
+# Para ser congruentes con Z, renombramos las columnas con los nombres
+# completos de Z
+colnames(E) <- colnames(Z)
+
+
+# =============================================================================
+# Modelo de insumo producto
+
+# Producción
+x <- rowSums(Z) + rowSums(DF)
+
+# Demanda final
+f <- as.vector(rowSums(DF))
+
+# x sombrero
+xhat <- diag(x)
+
+# Matriz de coeficientes técnicos
+A <- Z %*% solve( xhat )
+
+# Matriz identidad
+I <- diag( dim(A)[1])
+
+# Matriz de Leontief
+L <- solve(I - A )
+
+# Coeficientes de uso de cada energético por unidad de producto
+EC <- E %*% solve(xhat)
+colnames(EC) <- colnames(Z)
+
+# Nueva demanda final
+f1 <- f
+f1[80] <- f1[80] *1.10
+
+# Cálculo de nuevas demandas de energía por energético
+EC %*% L %*% f1
+
+# Diferencias
+deltaE <- cbind( rowSums(E), 
+       (EC %*% L %*% f1), 
+       (EC %*% L %*% f1)- rowSums(E), 
+       ((EC %*% L %*% f1)- rowSums(E))*100/ rowSums(E) 
+       ) # <-- fin del paréntesis
+colnames(deltaE) <- c("Original", "Política", "Diferencia", "Porcentual")
+
+# Y si queremos el detalle
+E1 <- EC %*% diag(as.vector(L %*% f1))
+
+
+# =============================================================================
+# Excel
+
+# Cambios en datos ambientales
+write.xlsx( as.data.frame(deltaE) , 
+            "datos_ambientales.xlsx",
+            sheetName= "datos",
+            startRow = 5,
+            startCol = 1,
+            asTable = FALSE, 
+            colNames = TRUE, 
+            rowNames = TRUE, 
+            overwrite = TRUE
+            )
+
+
+# =============================================================================
+# Bloopers
+
+# Inicialmente creímos que la matriz Z tenía un componente importado
+# y un componente nacional. Ese no es el caso, solo está dividida por
+# el tipo de control "nacional" o "extranjero" de la producción nacional.
+# Gracias a Johnny Aguilar por la aclaración.
+
+# Dejo la solución para extraer filas y columnas con índices, solamente
+# porque es una buena ilustración de algo que se utiliza continuamente
+# en el trabajo con este tipo de datos.
+
+# Obtenemos nuestros códigos de actividad y nombres
+cods <- as.data.frame(
+  read.xlsx(
+    "MIP-AE-AE-017-CR.xlsx",
+    sheet = "clasificaciones", 
+    rows= c(5:141), 
+    cols = c(1:5), 
+    skipEmptyRows = FALSE, 
+    colNames = TRUE, 
+    rowNames = FALSE
+  )
+)# <-- Fin del paréntesis
 
 # componente doméstico
 local <- c(2,4,6,8,10,12,14,16,18,20,22,24,26,28,30, 
@@ -57,114 +263,3 @@ X <- Z_cruda[local,-local]
 
 # Compras de Actividades no-domésticas a no-domésticas?
 XX <- Z_cruda[-local,-local]
-
-# Demanda Final
-# Consumo intermedio
-DF_cruda <- as.matrix(read.xlsx("MIP-AE-AE-017-CR.xlsx", 
-                               sheet = "MIP 2017", 
-                               rows= c(12:264), 
-                               cols = c(258:262), 
-                               skipEmptyRows = FALSE, 
-                               colNames = FALSE, 
-                               rowNames = FALSE)
-                     )  # <-- Fin del paréntesis
-
-# Componente doméstico de la demanda final
-DF <- DF_cruda[ local ,  ]
-
-# Obtenemos nuestros códigos de actividad y nombres
-cods <- as.data.frame(
-    read.xlsx(
-      "MIP-AE-AE-017-CR.xlsx",
-      sheet = "clasificaciones", 
-      rows= c(5:141), 
-      cols = c(1:5), 
-      skipEmptyRows = FALSE, 
-      colNames = TRUE, 
-      rowNames = FALSE
-      )
-  )# <-- Fin del paréntesis
-
-
-# Lo mismo para la demanda final
-codsDF <- as.data.frame(
-  t(
-    read.xlsx(
-      "MIP-AE-AE-017-CR.xlsx",
-      sheet = "MIP 2017", 
-      rows= c(9:10), 
-      cols = c(258:262), 
-      skipEmptyRows = FALSE,
-      colNames = FALSE, 
-      rowNames = FALSE
-  ))
-)# <-- Fin del paréntesis
-
-# Y nombramos nuestra matriz Z
-colnames(Z) <- as.vector(cods$codAECR)
-rownames(Z) <- as.vector(cods$codAECR)
-
-# Y nuestra matriz de demanda final DF
-colnames(DF) <- as.vector(codsDF$"1")
-rownames(DF) <- as.vector(cods$codAECR)
-
-# =============================================================================
-# Cuenta de energía
-
-# Importamos los datos crudos
-E_cruda <- as.matrix(read.xlsx("COUF-2017.xlsx", 
-                               sheet = "COUF-E 2017", 
-                               rows= c(127:146), 
-                               cols = c(3:169), 
-                               skipEmptyRows = FALSE, 
-                               colNames = FALSE, 
-                               rowNames = TRUE)
-)  # <-- Fin del paréntesis
-
-# Extraemos los valores excepto los grupos
-
-posGruposEnergia <- c(
-  2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,
-  24,25,26,27,28,29,30,32,33,34,36,37,38,39,40,41,42,43,44,45,
-  46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,
-  66,67,68,69,70,71,72,73,74,75,76,77,79,80,81,83,86,89,91,93,
-  95,96,98,99,100,101,102,103,104,105,107,108,109,111,112,114,
-  115,116,117,118,120,123,124,125,126,127,130,131,132,134,135,
-  136,137,138,139,140,141,142,144,145,146,147,150,154,155,156,
-  157,159,161,162,163,164,165,166
-)
-
-# Extraemos las que nos interesan
-E <- E_cruda[ , posGruposEnergia]
-
-# Y nombramos las columnas
-colnames(E) <- as.vector(cods$codAECR)
-
-# =============================================================================
-# Modelo de insumo producto
-
-# Producción
-x <- rowSums(Z) + rowSums(DF)
-
-# Demanda final
-f <- as.vector(rowSums(DF))
-
-# x sombrero
-xhat <- diag(x)
-
-# Matriz de coeficientes técnicos
-A <- Z %*% solve( xhat )
-
-# Matriz identidad
-I <- diag( dim(A)[1])
-
-# Matriz de Leontief
-L <- solve(I - A )
-
-# Coeficientes de uso de cada energético por unidad de producto
-EC <- E %*% solve(xhat)
-
-# Cálculo de nuevas demandas de energía por energético
-EC %*% L %*% f
-
-
