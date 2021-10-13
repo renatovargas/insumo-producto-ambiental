@@ -145,6 +145,83 @@ dim(E)
 # completos de Z
 colnames(E) <- colnames(Z)
 
+# Hacemos limpieza
+rm(Z_cruda,DF_cruda,E_cruda, nombres_e)
+
+# =============================================================================
+## Cuenta de energía 2018 (Preliminar No-Citar)
+
+# Importamos los datos crudos
+E_cruda <- as.matrix(read.xlsx("COUF-2018.xlsx", 
+                               sheet = "COUF-E 2018", 
+                               rows= c(126:145), 
+                               cols = c(3:170), 
+                               skipEmptyRows = FALSE, 
+                               colNames = FALSE, 
+                               rowNames = TRUE # Sí hay nombres de fila
+                               )
+)  # <-- Fin del paréntesis
+
+# Extraemos los nombres de columna
+nombres_e <- t(read.xlsx("COUF-2018.xlsx", 
+                         sheet = "COUF-E 2018", 
+                         rows= c(15), 
+                         cols = c(4:170), 
+                         skipEmptyRows = FALSE, 
+                         colNames = FALSE, 
+                         rowNames = FALSE)
+)  # <-- Fin del paréntesis
+
+# Y nombramos las columnas de nuestra matriz de usos energéticos
+colnames(E_cruda) <- c(nombres_e[,1])
+
+# Las dimensiones de E_cruda son mayores a las de Z
+# porque hay agregaciones por grupos de sectores y
+# hay sectores desagregados a mayor detalle.
+
+dim(E_cruda)
+
+# Identificamos las posiciones que son sumas de sectores
+# Nótese que dejamos dos sumas dentro que no tienen detalle
+# correspondientes a AE082 (Electricidad) y AE144 (hogares como empl.)
+
+# Notar que respecto de 2017 lo siguiente cambia a partir de 106 (107)
+
+posGruposEnergia <-c(1,31,35,78,82,94,97,107,111,114,
+                      120,123,134,144,148,151,154,159)
+
+# Extraemos solo los sectores (nótese el "-" antes de posGruposEnergia)
+E_cruda <- E_cruda[ , -posGruposEnergia]
+
+# Utilizando la función substr() extraemos los primeros 5 digitos de
+# la nomenclatura para poder agregar por actividades que comparten
+# esos mismos.
+colnames(E_cruda) <- substr(colnames(E_cruda), start = 1, stop = 5)
+
+# Y agregamos utilizando el mismo procedimiento que anteriormente.
+E18 <- as.matrix(t(aggregate.Matrix(t(E_cruda), colnames(E_cruda),fun = "sum")))
+E18 <- as.matrix(E18)
+# Y chequeamos que nuestras dimensiones sean iguales a las columnas
+# de Z
+dim(E18)
+
+# Para ser congruentes con Z, renombramos las columnas con los nombres
+# completos de Z
+colnames(E18) <- colnames(Z)
+
+# Hacemos limpieza
+rm(E_cruda)
+
+write.xlsx( as.data.frame(deltaE) , 
+            "datos_ambientales.xlsx",
+            sheetName= "datos",
+            startRow = 5,
+            startCol = 1,
+            asTable = FALSE, 
+            colNames = TRUE, 
+            rowNames = TRUE, 
+            overwrite = TRUE
+)
 
 # =============================================================================
 # Modelo de insumo producto
