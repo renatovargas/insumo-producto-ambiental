@@ -212,8 +212,11 @@ colnames(E18) <- colnames(Z)
 # Hacemos limpieza
 rm(E_cruda)
 
-write.xlsx( as.data.frame(deltaE) , 
-            "datos_ambientales.xlsx",
+moltenE18 <- as.matrix(melt(E18))
+
+# Exportamos a Excel
+write.xlsx( as.data.frame(moltenE18) , 
+            "CuentaEnergiaBD_2018.xlsx",
             sheetName= "datos",
             startRow = 5,
             startCol = 1,
