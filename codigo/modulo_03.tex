@@ -1,0 +1,604 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={modulo\_03.R},
+  pdfauthor={renato},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{modulo\_03.R}
+\author{renato}
+\date{2021-11-17}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Insumo{-}Producto Ambientalmente Extendido}
+\CommentTok{\# Facilitado por Renato Vargas}
+\CommentTok{\# Modulo 03 {-} Matriz de Insumo Producto y }
+\CommentTok{\# Cuentas Ambientales de Costa Rica}
+\CommentTok{\# Publicadas por el Banco Central de Costa Rica}
+\CommentTok{\# Año 2017}
+
+\CommentTok{\# Preámbulo}
+\FunctionTok{library}\NormalTok{(openxlsx)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'openxlsx' was built under R version 4.0.5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(reshape2)}
+\FunctionTok{library}\NormalTok{(Matrix.utils)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'Matrix.utils' was built under R version 4.0.5
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: Matrix
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{rm}\NormalTok{(  }\AttributeTok{list =} \FunctionTok{ls}\NormalTok{()  )}
+
+
+\CommentTok{\# Directorio de trabajo (ruta a los datos con "/" en vez de "\textbackslash{}")}
+\NormalTok{wd }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"D:/github/insumo{-}producto{-}ambiental/datos"}\NormalTok{)}
+\FunctionTok{setwd}\NormalTok{(wd)}
+\FunctionTok{getwd}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "D:/github/insumo-producto-ambiental/datos"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Consumo intermedio}
+\NormalTok{Z\_cruda }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{read.xlsx}\NormalTok{(}\StringTok{"MIP{-}AE{-}AE{-}017{-}CR.xlsx"}\NormalTok{, }
+                               \AttributeTok{sheet =} \StringTok{"MIP 2017"}\NormalTok{, }
+                               \AttributeTok{rows=} \FunctionTok{c}\NormalTok{(}\DecValTok{12}\SpecialCharTok{:}\DecValTok{264}\NormalTok{), }
+                               \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\SpecialCharTok{:}\DecValTok{256}\NormalTok{), }
+                               \AttributeTok{skipEmptyRows =} \ConstantTok{FALSE}\NormalTok{, }
+                               \AttributeTok{colNames =} \ConstantTok{FALSE}\NormalTok{, }
+                               \AttributeTok{rowNames =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{                     )  }\CommentTok{\# \textless{}{-}{-} Fin del paréntesis}
+
+\NormalTok{nombres }\OtherTok{\textless{}{-}} \FunctionTok{read.xlsx}\NormalTok{(}\StringTok{"MIP{-}AE{-}AE{-}017{-}CR.xlsx"}\NormalTok{, }
+                               \AttributeTok{sheet =} \StringTok{"MIP 2017"}\NormalTok{, }
+                               \AttributeTok{rows=} \FunctionTok{c}\NormalTok{(}\DecValTok{12}\SpecialCharTok{:}\DecValTok{264}\NormalTok{), }
+                               \AttributeTok{cols =} \DecValTok{1}\NormalTok{, }
+                               \AttributeTok{skipEmptyRows =} \ConstantTok{FALSE}\NormalTok{, }
+                               \AttributeTok{colNames =} \ConstantTok{FALSE}\NormalTok{, }
+                               \AttributeTok{rowNames =} \ConstantTok{FALSE}
+\NormalTok{)  }\CommentTok{\# \textless{}{-}{-} Fin del paréntesis}
+
+
+\CommentTok{\# Agregamos nuestra matriz para tener un valor por actividad}
+
+\CommentTok{\# Nombramos nuestra matriz Z}
+\FunctionTok{colnames}\NormalTok{(Z\_cruda) }\OtherTok{\textless{}{-}} \FunctionTok{as.vector}\NormalTok{(nombres}\SpecialCharTok{$}\NormalTok{X1)}
+\FunctionTok{rownames}\NormalTok{(Z\_cruda) }\OtherTok{\textless{}{-}} \FunctionTok{as.vector}\NormalTok{(nombres}\SpecialCharTok{$}\NormalTok{X1)}
+
+\NormalTok{Z }\OtherTok{\textless{}{-}} \FunctionTok{aggregate.Matrix}\NormalTok{(Z\_cruda, }\FunctionTok{as.factor}\NormalTok{(nombres}\SpecialCharTok{$}\NormalTok{X1),}\AttributeTok{fun =} \StringTok{"sum"}\NormalTok{)}
+\NormalTok{Z }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(}\FunctionTok{aggregate.Matrix}\NormalTok{(}\FunctionTok{t}\NormalTok{(Z), }\FunctionTok{as.factor}\NormalTok{(nombres}\SpecialCharTok{$}\NormalTok{X1),}\AttributeTok{fun =} \StringTok{"sum"}\NormalTok{))}
+\NormalTok{Z }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(Z)}
+
+\FunctionTok{dim}\NormalTok{(Z)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 136 136
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Demanda Final}
+\NormalTok{DF\_cruda }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{read.xlsx}\NormalTok{(}\StringTok{"MIP{-}AE{-}AE{-}017{-}CR.xlsx"}\NormalTok{, }
+                               \AttributeTok{sheet =} \StringTok{"MIP 2017"}\NormalTok{, }
+                               \AttributeTok{rows=} \FunctionTok{c}\NormalTok{(}\DecValTok{12}\SpecialCharTok{:}\DecValTok{264}\NormalTok{), }
+                               \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\DecValTok{258}\SpecialCharTok{:}\DecValTok{262}\NormalTok{), }
+                               \AttributeTok{skipEmptyRows =} \ConstantTok{FALSE}\NormalTok{, }
+                               \AttributeTok{colNames =} \ConstantTok{FALSE}\NormalTok{, }
+                               \AttributeTok{rowNames =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{                     )  }\CommentTok{\# \textless{}{-}{-} Fin del paréntesis}
+
+
+\CommentTok{\# Lo mismo para la demanda final}
+\NormalTok{codsDF }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}
+  \FunctionTok{t}\NormalTok{(}
+    \FunctionTok{read.xlsx}\NormalTok{(}
+      \StringTok{"MIP{-}AE{-}AE{-}017{-}CR.xlsx"}\NormalTok{,}
+      \AttributeTok{sheet =} \StringTok{"MIP 2017"}\NormalTok{, }
+      \AttributeTok{rows=} \FunctionTok{c}\NormalTok{(}\DecValTok{9}\SpecialCharTok{:}\DecValTok{10}\NormalTok{), }
+      \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\DecValTok{258}\SpecialCharTok{:}\DecValTok{262}\NormalTok{), }
+      \AttributeTok{skipEmptyRows =} \ConstantTok{FALSE}\NormalTok{,}
+      \AttributeTok{colNames =} \ConstantTok{FALSE}\NormalTok{, }
+      \AttributeTok{rowNames =} \ConstantTok{FALSE}
+\NormalTok{  ))}
+\NormalTok{)}\CommentTok{\# \textless{}{-}{-} Fin del paréntesis}
+
+\CommentTok{\# Y nuestra matriz de demanda final DF}
+\FunctionTok{colnames}\NormalTok{(DF\_cruda) }\OtherTok{\textless{}{-}} \FunctionTok{as.vector}\NormalTok{(codsDF[,}\DecValTok{1}\NormalTok{])}
+\FunctionTok{rownames}\NormalTok{(DF\_cruda) }\OtherTok{\textless{}{-}} \FunctionTok{as.vector}\NormalTok{(}\FunctionTok{rownames}\NormalTok{(Z\_cruda))}
+
+\CommentTok{\# Y agregamos las filas que se repiten}
+\NormalTok{DF }\OtherTok{\textless{}{-}} \FunctionTok{aggregate.Matrix}\NormalTok{(DF\_cruda, }\FunctionTok{as.factor}\NormalTok{(}\FunctionTok{rownames}\NormalTok{(DF\_cruda)),}\AttributeTok{fun =} \StringTok{"sum"}\NormalTok{)}
+\NormalTok{DF }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(DF)}
+
+\FunctionTok{dim}\NormalTok{(DF)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 136   5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# =============================================================================}
+\CommentTok{\# Cuenta de energía}
+
+\CommentTok{\# Importamos los datos crudos}
+\NormalTok{E\_cruda }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{read.xlsx}\NormalTok{(}\StringTok{"COUF{-}2017.xlsx"}\NormalTok{, }
+                               \AttributeTok{sheet =} \StringTok{"COUF{-}E 2017"}\NormalTok{, }
+                               \AttributeTok{rows=} \FunctionTok{c}\NormalTok{(}\DecValTok{127}\SpecialCharTok{:}\DecValTok{146}\NormalTok{), }
+                               \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\DecValTok{3}\SpecialCharTok{:}\DecValTok{169}\NormalTok{), }
+                               \AttributeTok{skipEmptyRows =} \ConstantTok{FALSE}\NormalTok{, }
+                               \AttributeTok{colNames =} \ConstantTok{FALSE}\NormalTok{, }
+                               \AttributeTok{rowNames =} \ConstantTok{TRUE} \CommentTok{\# Sí hay nombres de fila}
+\NormalTok{                               )}
+\NormalTok{)  }\CommentTok{\# \textless{}{-}{-} Fin del paréntesis}
+
+\CommentTok{\# Extraemos los nombres de columna}
+\NormalTok{nombres\_e }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(}\FunctionTok{read.xlsx}\NormalTok{(}\StringTok{"COUF{-}2017.xlsx"}\NormalTok{, }
+                               \AttributeTok{sheet =} \StringTok{"COUF{-}E 2017"}\NormalTok{, }
+                               \AttributeTok{rows=} \FunctionTok{c}\NormalTok{(}\DecValTok{16}\NormalTok{), }
+                               \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\SpecialCharTok{:}\DecValTok{169}\NormalTok{), }
+                               \AttributeTok{skipEmptyRows =} \ConstantTok{FALSE}\NormalTok{, }
+                               \AttributeTok{colNames =} \ConstantTok{FALSE}\NormalTok{, }
+                               \AttributeTok{rowNames =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{                     )  }\CommentTok{\# \textless{}{-}{-} Fin del paréntesis}
+
+\CommentTok{\# Y nombramos las columnas de nuestra matriz de usos energéticos}
+\FunctionTok{colnames}\NormalTok{(E\_cruda) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(nombres\_e[,}\DecValTok{1}\NormalTok{])}
+
+\CommentTok{\# Las dimensiones de E\_cruda son mayores a las de Z}
+\CommentTok{\# porque hay agregaciones por grupos de sectores y}
+\CommentTok{\# hay sectores desagregados a mayor detalle.}
+
+\FunctionTok{dim}\NormalTok{(E\_cruda)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  20 166
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Identificamos las posiciones que son sumas de sectores}
+\CommentTok{\# Nótese que dejamos dos sumas dentro que no tienen detalle}
+\CommentTok{\# correspondientes a AE082 (Electricidad) y AE144 (hogares como empl.)}
+
+\NormalTok{posGruposEnergia }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{31}\NormalTok{,}\DecValTok{35}\NormalTok{,}\DecValTok{78}\NormalTok{,}\DecValTok{82}\NormalTok{,}\DecValTok{94}\NormalTok{,}\DecValTok{97}\NormalTok{,}\DecValTok{106}\NormalTok{,}\DecValTok{110}\NormalTok{,}\DecValTok{113}\NormalTok{,}
+                      \DecValTok{119}\NormalTok{,}\DecValTok{122}\NormalTok{,}\DecValTok{133}\NormalTok{,}\DecValTok{143}\NormalTok{,}\DecValTok{147}\NormalTok{,}\DecValTok{150}\NormalTok{,}\DecValTok{153}\NormalTok{,}\DecValTok{158}\NormalTok{)}
+
+\CommentTok{\# Extraemos solo los sectores (nótese el "{-}" antes de posGruposEnergia)}
+\NormalTok{E\_cruda }\OtherTok{\textless{}{-}}\NormalTok{ E\_cruda[ , }\SpecialCharTok{{-}}\NormalTok{posGruposEnergia]}
+
+\CommentTok{\# Utilizando la función substr() extraemos los primeros 5 digitos de}
+\CommentTok{\# la nomenclatura para poder agregar por actividades que comparten}
+\CommentTok{\# esos mismos.}
+\FunctionTok{colnames}\NormalTok{(E\_cruda) }\OtherTok{\textless{}{-}} \FunctionTok{substr}\NormalTok{(}\FunctionTok{colnames}\NormalTok{(E\_cruda), }\AttributeTok{start =} \DecValTok{1}\NormalTok{, }\AttributeTok{stop =} \DecValTok{5}\NormalTok{)}
+
+\CommentTok{\# Y agregamos utilizando el mismo procedimiento que anteriormente.}
+\NormalTok{E }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{t}\NormalTok{(}\FunctionTok{aggregate.Matrix}\NormalTok{(}\FunctionTok{t}\NormalTok{(E\_cruda), }\FunctionTok{colnames}\NormalTok{(E\_cruda),}\AttributeTok{fun =} \StringTok{"sum"}\NormalTok{)))}
+\NormalTok{E }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(E)}
+\CommentTok{\# Y chequeamos que nuestras dimensiones sean iguales a las columnas}
+\CommentTok{\# de Z}
+\FunctionTok{dim}\NormalTok{(E)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  20 136
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Para ser congruentes con Z, renombramos las columnas con los nombres}
+\CommentTok{\# completos de Z}
+\FunctionTok{colnames}\NormalTok{(E) }\OtherTok{\textless{}{-}} \FunctionTok{colnames}\NormalTok{(Z)}
+
+\CommentTok{\# Hacemos limpieza}
+\FunctionTok{rm}\NormalTok{(Z\_cruda,DF\_cruda,E\_cruda, nombres\_e)}
+
+\CommentTok{\# =============================================================================}
+\DocumentationTok{\#\# Cuenta de energía 2018 (Preliminar No{-}Citar)}
+
+\CommentTok{\# Importamos los datos crudos}
+\NormalTok{E\_cruda }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{read.xlsx}\NormalTok{(}\StringTok{"COUF{-}2018.xlsx"}\NormalTok{, }
+                               \AttributeTok{sheet =} \StringTok{"COUF{-}E 2018"}\NormalTok{, }
+                               \AttributeTok{rows=} \FunctionTok{c}\NormalTok{(}\DecValTok{126}\SpecialCharTok{:}\DecValTok{145}\NormalTok{), }
+                               \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\DecValTok{3}\SpecialCharTok{:}\DecValTok{170}\NormalTok{), }
+                               \AttributeTok{skipEmptyRows =} \ConstantTok{FALSE}\NormalTok{, }
+                               \AttributeTok{colNames =} \ConstantTok{FALSE}\NormalTok{, }
+                               \AttributeTok{rowNames =} \ConstantTok{TRUE} \CommentTok{\# Sí hay nombres de fila}
+\NormalTok{                               )}
+\NormalTok{)  }\CommentTok{\# \textless{}{-}{-} Fin del paréntesis}
+
+\CommentTok{\# Extraemos los nombres de columna}
+\NormalTok{nombres\_e }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(}\FunctionTok{read.xlsx}\NormalTok{(}\StringTok{"COUF{-}2018.xlsx"}\NormalTok{, }
+                         \AttributeTok{sheet =} \StringTok{"COUF{-}E 2018"}\NormalTok{, }
+                         \AttributeTok{rows=} \FunctionTok{c}\NormalTok{(}\DecValTok{15}\NormalTok{), }
+                         \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\SpecialCharTok{:}\DecValTok{170}\NormalTok{), }
+                         \AttributeTok{skipEmptyRows =} \ConstantTok{FALSE}\NormalTok{, }
+                         \AttributeTok{colNames =} \ConstantTok{FALSE}\NormalTok{, }
+                         \AttributeTok{rowNames =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{)  }\CommentTok{\# \textless{}{-}{-} Fin del paréntesis}
+
+\CommentTok{\# Y nombramos las columnas de nuestra matriz de usos energéticos}
+\FunctionTok{colnames}\NormalTok{(E\_cruda) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(nombres\_e[,}\DecValTok{1}\NormalTok{])}
+
+\CommentTok{\# Las dimensiones de E\_cruda son mayores a las de Z}
+\CommentTok{\# porque hay agregaciones por grupos de sectores y}
+\CommentTok{\# hay sectores desagregados a mayor detalle.}
+
+\FunctionTok{dim}\NormalTok{(E\_cruda)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  20 167
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Identificamos las posiciones que son sumas de sectores}
+\CommentTok{\# Nótese que dejamos dos sumas dentro que no tienen detalle}
+\CommentTok{\# correspondientes a AE082 (Electricidad) y AE144 (hogares como empl.)}
+
+\CommentTok{\# Notar que respecto de 2017 lo siguiente cambia a partir de 106 (107)}
+
+\NormalTok{posGruposEnergia }\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{31}\NormalTok{,}\DecValTok{35}\NormalTok{,}\DecValTok{78}\NormalTok{,}\DecValTok{82}\NormalTok{,}\DecValTok{94}\NormalTok{,}\DecValTok{97}\NormalTok{,}\DecValTok{107}\NormalTok{,}\DecValTok{111}\NormalTok{,}\DecValTok{114}\NormalTok{,}
+                      \DecValTok{120}\NormalTok{,}\DecValTok{123}\NormalTok{,}\DecValTok{134}\NormalTok{,}\DecValTok{144}\NormalTok{,}\DecValTok{148}\NormalTok{,}\DecValTok{151}\NormalTok{,}\DecValTok{154}\NormalTok{,}\DecValTok{159}\NormalTok{)}
+
+\CommentTok{\# Extraemos solo los sectores (nótese el "{-}" antes de posGruposEnergia)}
+\NormalTok{E\_cruda }\OtherTok{\textless{}{-}}\NormalTok{ E\_cruda[ , }\SpecialCharTok{{-}}\NormalTok{posGruposEnergia]}
+
+\CommentTok{\# Utilizando la función substr() extraemos los primeros 5 digitos de}
+\CommentTok{\# la nomenclatura para poder agregar por actividades que comparten}
+\CommentTok{\# esos mismos.}
+\FunctionTok{colnames}\NormalTok{(E\_cruda) }\OtherTok{\textless{}{-}} \FunctionTok{substr}\NormalTok{(}\FunctionTok{colnames}\NormalTok{(E\_cruda), }\AttributeTok{start =} \DecValTok{1}\NormalTok{, }\AttributeTok{stop =} \DecValTok{5}\NormalTok{)}
+
+\CommentTok{\# Y agregamos utilizando el mismo procedimiento que anteriormente.}
+\NormalTok{E18 }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{t}\NormalTok{(}\FunctionTok{aggregate.Matrix}\NormalTok{(}\FunctionTok{t}\NormalTok{(E\_cruda), }\FunctionTok{colnames}\NormalTok{(E\_cruda),}\AttributeTok{fun =} \StringTok{"sum"}\NormalTok{)))}
+\NormalTok{E18 }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(E18)}
+\CommentTok{\# Y chequeamos que nuestras dimensiones sean iguales a las columnas}
+\CommentTok{\# de Z}
+\FunctionTok{dim}\NormalTok{(E18)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  20 136
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Para ser congruentes con Z, renombramos las columnas con los nombres}
+\CommentTok{\# completos de Z}
+\FunctionTok{colnames}\NormalTok{(E18) }\OtherTok{\textless{}{-}} \FunctionTok{colnames}\NormalTok{(Z)}
+
+\CommentTok{\# Hacemos limpieza}
+\FunctionTok{rm}\NormalTok{(E\_cruda)}
+
+\NormalTok{moltenE18 }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{melt}\NormalTok{(E18))}
+
+\CommentTok{\# Exportamos a Excel}
+\FunctionTok{write.xlsx}\NormalTok{( }\FunctionTok{as.data.frame}\NormalTok{(moltenE18) , }
+            \StringTok{"CuentaEnergiaBD\_2018.xlsx"}\NormalTok{,}
+            \AttributeTok{sheetName=} \StringTok{"datos"}\NormalTok{,}
+            \AttributeTok{startRow =} \DecValTok{5}\NormalTok{,}
+            \AttributeTok{startCol =} \DecValTok{1}\NormalTok{,}
+            \AttributeTok{asTable =} \ConstantTok{FALSE}\NormalTok{, }
+            \AttributeTok{colNames =} \ConstantTok{TRUE}\NormalTok{, }
+            \AttributeTok{rowNames =} \ConstantTok{TRUE}\NormalTok{, }
+            \AttributeTok{overwrite =} \ConstantTok{TRUE}
+\NormalTok{)}
+
+\CommentTok{\# =============================================================================}
+\CommentTok{\# Modelo de insumo producto}
+
+\CommentTok{\# Producción}
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{as.vector}\NormalTok{(}\FunctionTok{rowSums}\NormalTok{(Z) }\SpecialCharTok{+} \FunctionTok{rowSums}\NormalTok{(DF))}
+
+\CommentTok{\# Demanda final}
+\NormalTok{f }\OtherTok{\textless{}{-}} \FunctionTok{as.vector}\NormalTok{(}\FunctionTok{rowSums}\NormalTok{(DF))}
+
+\CommentTok{\# x sombrero}
+\NormalTok{xhat }\OtherTok{\textless{}{-}} \FunctionTok{diag}\NormalTok{(x)}
+\NormalTok{xhat\_inv }\OtherTok{\textless{}{-}} \FunctionTok{solve}\NormalTok{(xhat)}
+
+\CommentTok{\# Matriz de coeficientes técnicos}
+\NormalTok{A }\OtherTok{\textless{}{-}}\NormalTok{ Z }\SpecialCharTok{\%*\%} \FunctionTok{solve}\NormalTok{( xhat )}
+
+\CommentTok{\# Matriz identidad}
+\NormalTok{I }\OtherTok{\textless{}{-}} \FunctionTok{diag}\NormalTok{( }\FunctionTok{dim}\NormalTok{(A)[}\DecValTok{1}\NormalTok{])}
+
+\CommentTok{\# Matriz de Leontief}
+\NormalTok{L }\OtherTok{\textless{}{-}} \FunctionTok{solve}\NormalTok{(I }\SpecialCharTok{{-}}\NormalTok{ A )}
+
+\CommentTok{\# Coeficientes de uso de cada energético por unidad de producto}
+\NormalTok{EC }\OtherTok{\textless{}{-}}\NormalTok{ E }\SpecialCharTok{\%*\%} \FunctionTok{solve}\NormalTok{(xhat)}
+\FunctionTok{colnames}\NormalTok{(EC) }\OtherTok{\textless{}{-}} \FunctionTok{colnames}\NormalTok{(Z)}
+
+\CommentTok{\# Nueva demanda final}
+\NormalTok{f1 }\OtherTok{\textless{}{-}}\NormalTok{ f}
+\NormalTok{f1[}\DecValTok{80}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ f1[}\DecValTok{80}\NormalTok{] }\SpecialCharTok{*}\FloatTok{1.20}
+
+\CommentTok{\# Cálculo de nuevas demandas de energía por energético}
+\NormalTok{EC }\SpecialCharTok{\%*\%}\NormalTok{ L }\SpecialCharTok{\%*\%}\NormalTok{ f1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                                  [,1]
+## Petróleo                     0.000000
+## Carbón Mineral             217.854446
+## Leña                      6155.246485
+## Bagazo                    9361.769370
+## Cascarilla de café         400.455355
+## Otros residuos vegetales  3336.413576
+## Biogás                       4.442436
+## Coque                     3855.035343
+## Carbón Vegetal               0.000000
+## Gas licuado de petróleo   5048.034741
+## Gasolina regular          5510.603805
+## Gasolina super            4471.370715
+## Av gas                      52.332118
+## Kerosene                   232.172537
+## Jet fuel                  1112.688822
+## Diésel                   38229.913051
+## Gasóleo                    426.222919
+## IFO 380                      0.000000
+## Fuel oil                  5059.333812
+## Energía Eléctrica        22498.552276
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Diferencias}
+\NormalTok{deltaE }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{( }\FunctionTok{rowSums}\NormalTok{(E), }
+\NormalTok{       (EC }\SpecialCharTok{\%*\%}\NormalTok{ L }\SpecialCharTok{\%*\%}\NormalTok{ f1), }
+\NormalTok{       (EC }\SpecialCharTok{\%*\%}\NormalTok{ L }\SpecialCharTok{\%*\%}\NormalTok{ f1)}\SpecialCharTok{{-}} \FunctionTok{rowSums}\NormalTok{(E), }
+\NormalTok{       ((EC }\SpecialCharTok{\%*\%}\NormalTok{ L }\SpecialCharTok{\%*\%}\NormalTok{ f1)}\SpecialCharTok{{-}} \FunctionTok{rowSums}\NormalTok{(E))}\SpecialCharTok{*}\DecValTok{100}\SpecialCharTok{/} \FunctionTok{rowSums}\NormalTok{(E) }
+\NormalTok{       ) }\CommentTok{\# \textless{}{-}{-} fin del paréntesis}
+\FunctionTok{colnames}\NormalTok{(deltaE) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Original"}\NormalTok{, }\StringTok{"Política"}\NormalTok{, }\StringTok{"Diferencia"}\NormalTok{, }\StringTok{"Porcentual"}\NormalTok{)}
+
+\CommentTok{\# Y si queremos el detalle}
+\NormalTok{E1 }\OtherTok{\textless{}{-}}\NormalTok{ EC }\SpecialCharTok{\%*\%} \FunctionTok{diag}\NormalTok{(}\FunctionTok{as.vector}\NormalTok{(L }\SpecialCharTok{\%*\%}\NormalTok{ f1))}
+\FunctionTok{colnames}\NormalTok{(E1) }\OtherTok{\textless{}{-}} \FunctionTok{colnames}\NormalTok{(E)}
+
+\CommentTok{\# =============================================================================}
+\CommentTok{\# Bioeconomía}
+
+\CommentTok{\# Clasificación cruzada bioeconomía AECR}
+\NormalTok{clasifs\_bioeconomia }\OtherTok{\textless{}{-}} \FunctionTok{read.xlsx}\NormalTok{(}\StringTok{"clasificacion\_cruzada\_bioeconomia.xlsx"}\NormalTok{, }
+                                            \AttributeTok{sheet =} \StringTok{"datos"}\NormalTok{, }
+                                            \AttributeTok{rows=} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{137}\NormalTok{), }
+                                            \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{6}\NormalTok{), }
+                                            \AttributeTok{skipEmptyRows =} \ConstantTok{FALSE}\NormalTok{, }
+                                            \AttributeTok{colNames =}\ConstantTok{TRUE}\NormalTok{, }
+                                            \AttributeTok{rowNames =} \ConstantTok{FALSE}
+\NormalTok{)  }\CommentTok{\# \textless{}{-}{-} Fin del paréntesis}
+
+
+
+
+
+\CommentTok{\# =============================================================================}
+\CommentTok{\# Excel}
+
+\FunctionTok{write.xlsx}\NormalTok{(}\FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{colnames}\NormalTok{(Z)),}
+                         \StringTok{"nombres\_Z.xlsx"}\NormalTok{,}
+                         \AttributeTok{sheetName =} \StringTok{"datos"}\NormalTok{,}
+                         \AttributeTok{startRow =} \DecValTok{5}\NormalTok{,}
+                         \AttributeTok{startCol =} \DecValTok{1}\NormalTok{,}
+                         \AttributeTok{asTable =} \ConstantTok{FALSE}\NormalTok{,}
+                         \AttributeTok{colNames =} \ConstantTok{TRUE}\NormalTok{,}
+                         \AttributeTok{rowNames =} \ConstantTok{TRUE}\NormalTok{,}
+                         \AttributeTok{overwrite =} \ConstantTok{TRUE}\NormalTok{)}
+
+\CommentTok{\# Cambios en datos ambientales}
+\FunctionTok{write.xlsx}\NormalTok{( }\FunctionTok{as.data.frame}\NormalTok{(deltaE) , }
+            \StringTok{"datos\_ambientales.xlsx"}\NormalTok{,}
+            \AttributeTok{sheetName=} \StringTok{"datos"}\NormalTok{,}
+            \AttributeTok{startRow =} \DecValTok{5}\NormalTok{,}
+            \AttributeTok{startCol =} \DecValTok{1}\NormalTok{,}
+            \AttributeTok{asTable =} \ConstantTok{FALSE}\NormalTok{, }
+            \AttributeTok{colNames =} \ConstantTok{TRUE}\NormalTok{, }
+            \AttributeTok{rowNames =} \ConstantTok{TRUE}\NormalTok{, }
+            \AttributeTok{overwrite =} \ConstantTok{TRUE}
+\NormalTok{            )}
+
+\CommentTok{\# Gráfico}
+\FunctionTok{heatmap}\NormalTok{(E1, }\AttributeTok{Colv =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{Rowv =} \ConstantTok{NA}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{modulo_03_files/figure-latex/unnamed-chunk-1-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# \# =============================================================================}
+\CommentTok{\# \# Bloopers}
+\CommentTok{\# }
+\CommentTok{\# \# Inicialmente creímos que la matriz Z tenía un componente importado}
+\CommentTok{\# \# y un componente nacional. Ese no es el caso, solo está dividida por}
+\CommentTok{\# \# el tipo de control "nacional" o "extranjero" de la producción nacional.}
+\CommentTok{\# \# Gracias a Johnny Aguilar por la aclaración.}
+\CommentTok{\# }
+\CommentTok{\# \# Dejo la solución para extraer filas y columnas con índices, solamente}
+\CommentTok{\# \# porque es una buena ilustración de algo que se utiliza continuamente}
+\CommentTok{\# \# en el trabajo con este tipo de datos.}
+\CommentTok{\# }
+\CommentTok{\# \# Obtenemos nuestros códigos de actividad y nombres}
+\CommentTok{\# cods \textless{}{-} as.data.frame(}
+\CommentTok{\#   read.xlsx(}
+\CommentTok{\#     "MIP{-}AE{-}AE{-}017{-}CR.xlsx",}
+\CommentTok{\#     sheet = "clasificaciones", }
+\CommentTok{\#     rows= c(5:141), }
+\CommentTok{\#     cols = c(1:5), }
+\CommentTok{\#     skipEmptyRows = FALSE, }
+\CommentTok{\#     colNames = TRUE, }
+\CommentTok{\#     rowNames = FALSE}
+\CommentTok{\#   )}
+\CommentTok{\# )\# \textless{}{-}{-} Fin del paréntesis}
+\CommentTok{\# }
+\CommentTok{\# \# componente doméstico}
+\CommentTok{\# local \textless{}{-} c(2,4,6,8,10,12,14,16,18,20,22,24,26,28,30, }
+\CommentTok{\#            32,34,36,38,40,42,44,46,48,50,52,54,56,58,60, }
+\CommentTok{\#            62,64,66,68,70,71,73,75,77,78,80,81,83,85,87,88, }
+\CommentTok{\#            90,92,94,95,97,98,99,100,101,103,105,107,108,110, }
+\CommentTok{\#            112,114,115,117,119,120,121,123,125,127,129,131, }
+\CommentTok{\#            133,135,137,139,141,143,145,147,149,151,153,155, }
+\CommentTok{\#            157,159,161,162,164,166,167,169,171,173,174,176, }
+\CommentTok{\#            178,180,182,184,186,188,190,192,194,196,197,199, }
+\CommentTok{\#            200,202,204,206,208,210,212,214,216,218,219,221, }
+\CommentTok{\#            223,225,227,229,231,233,235,237,239,241,243,245, }
+\CommentTok{\#            247,249,251,253)}
+\CommentTok{\# }
+\CommentTok{\# \# Si el BCR hubiera dejado (aunque en ceros) el componente importado}
+\CommentTok{\# \# de los sectores que solamente tienen componente local, los indices}
+\CommentTok{\# \# serían más fáciles de construir con:}
+\CommentTok{\# \# seq( from=2, to= 254, by=2 ) para lo doméstico }
+\CommentTok{\# }
+\CommentTok{\# \# Aquí utilizamos el método del índice en R para obtener nuestros elementos}
+\CommentTok{\# }
+\CommentTok{\# \# Compras entre actividades económicas domésticas (consumo intermedio)}
+\CommentTok{\# Z \textless{}{-} Z\_cruda[  local  ,  local   ]}
+\CommentTok{\# }
+\CommentTok{\# \# Compras de producto importado de las actividades domésticas (importaciones)}
+\CommentTok{\# M \textless{}{-} Z\_cruda[{-}local,local]}
+\CommentTok{\# }
+\CommentTok{\# \# Compras de Actividades económicas no{-}domésticas a las actividades locales}
+\CommentTok{\# \# (exportaciones)}
+\CommentTok{\# X \textless{}{-} Z\_cruda[local,{-}local]}
+\CommentTok{\# }
+\CommentTok{\# \# Compras de Actividades no{-}domésticas a no{-}domésticas?}
+\CommentTok{\# XX \textless{}{-} Z\_cruda[{-}local,{-}local]}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}
