@@ -14,7 +14,7 @@ rm(  list = ls()  )
 
 
 # Directorio de trabajo (ruta a los datos con "/" en vez de "\")
-wd <- c("D:/github/insumo-producto-ambiental/datos")
+wd <- c("C:/Users/renato/GitHub/insumo-producto-ambiental/datos/")
 setwd(wd)
 getwd()
 
@@ -227,6 +227,8 @@ write.xlsx( as.data.frame(moltenE18) ,
             rowNames = TRUE, 
             overwrite = TRUE
 )
+
+# write.table(as.data.frame(moltenE18),"clipboard", sep = "\t", row.names = TRUE)
 
 # =============================================================================
 # Modelo de insumo producto
@@ -523,60 +525,4 @@ write.xlsx( as.data.frame(deltaE) ,
 # Gráfico
 heatmap(E1, Colv = NA, Rowv = NA)
 
-# # =============================================================================
-# # Bloopers
-# 
-# # Inicialmente creímos que la matriz Z tenía un componente importado
-# # y un componente nacional. Ese no es el caso, solo está dividida por
-# # el tipo de control "nacional" o "extranjero" de la producción nacional.
-# # Gracias a Johnny Aguilar por la aclaración.
-# 
-# # Dejo la solución para extraer filas y columnas con índices, solamente
-# # porque es una buena ilustración de algo que se utiliza continuamente
-# # en el trabajo con este tipo de datos.
-# 
-# # Obtenemos nuestros códigos de actividad y nombres
-# cods <- as.data.frame(
-#   read.xlsx(
-#     "MIP-AE-AE-017-CR.xlsx",
-#     sheet = "clasificaciones", 
-#     rows= c(5:141), 
-#     cols = c(1:5), 
-#     skipEmptyRows = FALSE, 
-#     colNames = TRUE, 
-#     rowNames = FALSE
-#   )
-# )# <-- Fin del paréntesis
-# 
-# # componente doméstico
-# local <- c(2,4,6,8,10,12,14,16,18,20,22,24,26,28,30, 
-#            32,34,36,38,40,42,44,46,48,50,52,54,56,58,60, 
-#            62,64,66,68,70,71,73,75,77,78,80,81,83,85,87,88, 
-#            90,92,94,95,97,98,99,100,101,103,105,107,108,110, 
-#            112,114,115,117,119,120,121,123,125,127,129,131, 
-#            133,135,137,139,141,143,145,147,149,151,153,155, 
-#            157,159,161,162,164,166,167,169,171,173,174,176, 
-#            178,180,182,184,186,188,190,192,194,196,197,199, 
-#            200,202,204,206,208,210,212,214,216,218,219,221, 
-#            223,225,227,229,231,233,235,237,239,241,243,245, 
-#            247,249,251,253)
-# 
-# # Si el BCR hubiera dejado (aunque en ceros) el componente importado
-# # de los sectores que solamente tienen componente local, los indices
-# # serían más fáciles de construir con:
-# # seq( from=2, to= 254, by=2 ) para lo doméstico 
-# 
-# # Aquí utilizamos el método del índice en R para obtener nuestros elementos
-# 
-# # Compras entre actividades económicas domésticas (consumo intermedio)
-# Z <- Z_cruda[  local  ,  local   ]
-# 
-# # Compras de producto importado de las actividades domésticas (importaciones)
-# M <- Z_cruda[-local,local]
-# 
-# # Compras de Actividades económicas no-domésticas a las actividades locales
-# # (exportaciones)
-# X <- Z_cruda[local,-local]
-# 
-# # Compras de Actividades no-domésticas a no-domésticas?
-# XX <- Z_cruda[-local,-local]
+
