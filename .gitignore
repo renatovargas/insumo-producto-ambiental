@@ -1,3 +1,4 @@
 *.Rhistory
 .RData
 material/~$emplos_Notacion_Matricial.docx
+.Rproj.user
